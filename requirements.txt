@@ -1,0 +1,20 @@
+# Essential
+pandas
+numpy
+matplotlib
+seaborn
+scikit-learn
+umap-learn
+geopandas
+altair
+vega-datasets
+
+# More
+lime 
+shap 
+pdpbox
+mlxtend
+
+# gradio or streamlit?
+gradio
+streamlit
