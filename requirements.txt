@@ -21,3 +21,6 @@ mlxtend
 # gradio or streamlit?
 gradio
 streamlit
+
+# ai explaining
+duckduckgo_search

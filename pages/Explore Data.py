@@ -73,7 +73,7 @@ def loading_dataset():
 
     # Drop columns we're not going to use
     progress_bar.progress(91, text="Dropping irrelevant columns & cleaning dataset...")
-    data = data.drop(['tags', 'use', 'currency', 'country_code'], axis=1)
+    data = data.drop(['tags', 'use', 'currency', 'country_code', 'partner_id'], axis=1)
 
     #Dropping missing values using dropna
     data.dropna(inplace=True)
@@ -177,24 +177,9 @@ if not selected_sector:
 if not selected_country:
     st.warning("Please select a country from the sidebar ⚠️")
     st.stop()
+    
 #########################################################################################################################
-# PART 4: DATA OVERVIEW
-with st.expander("GENERAL OVERVIEW OF DATA & DESCRIPTIVE STATISTICS (all data 🗺️)"):
-    st.header("Dataset Overview (all data)")
-    st.markdown("data.head():")
-    st.table(data.head())
-    st.header("Descriptive Statistics (all data)")
-    st.markdown("data.describe().T")
-    st.dataframe(data.describe().T)
-
-# PART 4.5: DESCRIPTIVE STATISTICS 
-with st.expander("FILTERED DESCRIPTIVE STATISTICS (side-filtered data 📊)"):
-    st.header("Descriptive Statistics (based on sidebar-filter)")
-    st.markdown("filtered_data.describe().T")
-    st.dataframe(filtered_data.describe().T)
-
-#########################################################################################################################
-# PART 5: VISUALIZATIONS
+# PART 4: VISUALIZATIONS
 # Dropdown to select the type of visualization
 visualization_option = st.selectbox(
     "Select Visualization 🎨", 

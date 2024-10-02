@@ -125,205 +125,24 @@ def loading_dataset():
 
 data = loading_dataset()
 
-# PART 3: Setting up title and filter-sideheader
-st.sidebar.header("Filters 📊")
-#########################################################################################################################
-# GENDER SIDEBAR
 
-# CREATE LIST OVER GENDERS
-all_gender = data['gender_class'].unique().tolist() # - REMOVED DUE TO GENDER WONT BE UPDATED IN DATASET
-
-# GENDER SIDEBAR MULTISELECT
-selected_gender = st.sidebar.multiselect("Select Gender Group 🧑‍🧑‍🧒", all_gender, default=all_gender)
-
-# Filtration of data based on sidebar
-filtered_data = data[data['gender_class'].isin(selected_gender)]
-#########################################################################################################################
-# SECTOR SIDEBAR
-
-# CREATE LIST OVER ALL SECTORS
-all_sectors = data['sector'].unique().tolist()
-
-# SECTOR SIDEBAR MULTISELECT
-selected_sector = st.sidebar.multiselect("Select Sectors 💼", all_sectors, default=all_sectors)
-
-# Filtration of data based on sidebar
-filtered_data = filtered_data[filtered_data['sector'].isin(selected_sector)]
-#########################################################################################################################
-# COUNTRY SIDEBAR
-
-# CALCULATE TOP 10 COUNTRIES & CREATE A LIST
-top_countries = data.groupby('country').size().nlargest(10).index.tolist()
-
-# COUNTRY SIDEBAR MULTISELECT
-selected_country = st.sidebar.multiselect(
-    "Select Country 🇺🇳", top_countries, default=top_countries)
-
-# Filtration of data based on sidebar
-filtered_data = filtered_data[filtered_data['country'].isin(selected_country)]
-#########################################################################################################################
-# CHECK IF CHOICE HAS BEEN MADE ON GENDER GROUP, SECTORS & COUNTRY
-# GENDER - NO CHOICE WARNING 
-if not selected_gender:
-    st.warning("Please select a gender group from the sidebar ⚠️")
-    st.stop()
-
-# SECTOR - NO CHOICE WARNING 
-if not selected_sector:
-    st.warning("Please select a sector from the sidebar ⚠️")
-    st.stop()
-
-# COUNTRY - NO CHOICE WARNING 
-if not selected_country:
-    st.warning("Please select a country from the sidebar ⚠️")
-    st.stop()
 #########################################################################################################################
 # PART 4: DATA OVERVIEW
-with st.expander("GENERAL OVERVIEW OF DATA & DESCRIPTIVE STATISTICS (all data 🗺️)"):
-    st.header("Dataset Overview (all data)")
+
+with st.expander("OVERVIEW OF DATA 🗺️"):
+    st.subheader("Dataset Overview (cleaned data)")
     st.markdown("data.head():")
     st.table(data.head())
-    st.header("Descriptive Statistics (all data)")
+with st.expander("DESCRIPTIVE STATISTICS 📊"):
+    st.subheader("Descriptive Statistics (cleaned data)")
     st.markdown("data.describe().T")
-    st.dataframe(data.describe().T)
+    st.dataframe(data.describe())
 
-# PART 4.5: DESCRIPTIVE STATISTICS 
-with st.expander("FILTERED DESCRIPTIVE STATISTICS (side-filtered data 📊)"):
-    st.header("Descriptive Statistics (based on sidebar-filter)")
-    st.markdown("filtered_data.describe().T")
-    st.dataframe(filtered_data.describe().T)
+# AI explaination
+@st.cache_data
+def explaination():
+    ai_overview = DDGS().chat("You're a smart data analyst. Provide and interpretate an overview of the Dataset." + str((data.describe())))
+    return ai_overview
 
-#########################################################################################################################
-# PART 5: VISUALIZATIONS
-# Dropdown to select the type of visualization
-visualization_option = st.selectbox(
-    "Select Visualization 🎨", 
-    ["Records of Loans Issued By Sector & Country (Top 10 Countries)", 
-     "KDE Plot - By Sector, Country & Total",
-     "Box Plot - Country, Sector & Gender Group",
-     # "Stacked Bar Chart - Mean Loan Amount by Gender, Sector & Country", REMOVED
-     "Heatmap of Average Loan by Sector & Country",
-     "Frequency of Funded Loans Over Time"])
-
-if visualization_option == "Records of Loans Issued By Sector & Country (Top 10 Countries)":
-    # Bar chart for Records of Loans Issued By Sector & Country (Top 10 Countries)
-    chart = alt.Chart(filtered_data).mark_bar().encode(
-        x='loan_amount',
-        y='count()',
-        color='sector',
-    ).properties(
-        title='Records of Loans Issued By Sector & Country (Top 10 Countries)'
-    )
-    st.altair_chart(chart, use_container_width=True)
-
-    # Bar chart for Countries only
-    chart = alt.Chart(filtered_data).mark_bar().encode(
-        x='loan_amount',
-        y='count()',
-        color='country',
-    ).properties(
-        title='Records of Loans Issued By Country Only (Top 10 Countries)'
-    )
-    st.altair_chart(chart, use_container_width=True)
-
-elif visualization_option == "KDE Plot - By Sector, Country & Total":
-    # KDE plot - SECTOR
-    plt.figure(figsize=(10, 6))
-    sns.kdeplot(data=filtered_data, x='loan_amount', hue='sector', fill=True, palette='gist_rainbow')
-    plt.xlabel('Loan Amount')
-    plt.ylabel('Density')
-    plt.title('KDE Plot of Loan Amount by Sector')
-    st.pyplot(plt)
-
-    # KDE plot - Country
-    plt.figure(figsize=(10, 6))
-    sns.kdeplot(data=filtered_data, x='loan_amount', hue='country', fill=True, palette='gist_rainbow')
-    plt.xlabel('Loan Amount')
-    plt.ylabel('Density')
-    plt.title('KDE Plot of Loan Amount by Country')
-    st.pyplot(plt)
-
-    # KDE plot - TOTAL
-    plt.figure(figsize=(10, 6))
-    sns.kdeplot(data=filtered_data, x='loan_amount', fill=True, palette='gist_rainbow')
-    plt.xlabel('Loan Amount')
-    plt.ylabel('Density')
-    plt.title('KDE Plot of Total Loan Amount')
-    st.pyplot(plt)
-
-elif visualization_option == "Box Plot - Country, Sector & Gender Group":
-    plt.figure(figsize=(12, 8))
-    sns.boxplot(data=filtered_data, x='sector', y='loan_amount', hue='gender_class', palette='gist_rainbow')
-    plt.title('Box Plot of Loan Amounts By Sector and Gender Group')
-    plt.xlabel('Sector')
-    plt.ylabel('Loan Amount')
-    plt.xticks(rotation=45)
-    st.pyplot(plt)
-    
-    plt.figure(figsize=(12, 8))
-    sns.boxplot(data=filtered_data, x='sector', y='loan_amount', hue='country', palette='gist_rainbow')
-    plt.title('Box Plot of Loan Amounts By Country (top 10) & Sector')
-    plt.xlabel('Sector')
-    plt.ylabel('Country')
-    plt.xticks(rotation=45)
-    st.pyplot(plt)
-
-elif visualization_option == "Stacked Bar Chart - Mean Loan Amount by Gender, Sector & Country":
-    gender_sector_country = filtered_data.groupby(['sector', 'country', 'gender_class'])['loan_amount'].mean().unstack()
-    gender_sector_country.plot(kind='barh', stacked=True, colormap='coolwarm', figsize=(14, 26))
-    plt.title('Stacked Bar Chart of Mean Loan Amount by Gender Sector & Country')
-    plt.ylabel('Sector and Country')
-    plt.xlabel('Mean Loan Amount')
-    plt.xticks(rotation=0)
-    st.pyplot(plt)
-
-    gender_sector = filtered_data.groupby(['sector', 'gender_class'])['loan_amount'].mean().unstack()
-    gender_sector.plot(kind='barh', stacked=True, colormap='coolwarm', figsize=(14, 8))
-    plt.title('GENDER & SECTOR ONLY: Stacked Bar Chart of Mean Loan Amount by Gender & Sector')
-    plt.ylabel('Sector')
-    plt.xlabel('Mean Loan Amount')
-    plt.xticks(rotation=0)
-    st.pyplot(plt)
-
-    gender_country = filtered_data.groupby(['country', 'gender_class'])['loan_amount'].mean().unstack()
-    gender_country.plot(kind='barh', stacked=True, colormap='coolwarm', figsize=(14, 8))
-    plt.title('GENDER & COUNTRY ONLY: Stacked Bar Chart of Mean Loan Amount by Gender & Country')
-    plt.ylabel('Country')
-    plt.xlabel('Mean Loan Amount')
-    plt.xticks(rotation=0)
-    st.pyplot(plt)
-
-elif visualization_option == "Heatmap of Average Loan by Sector & Country":
-    heatmap_data = filtered_data.pivot_table(index='sector', columns='country', values='loan_amount', aggfunc='mean')
-    plt.figure(figsize=(12, 8))
-    sns.heatmap(heatmap_data, cmap="coolwarm", annot=True, fmt=".1f")
-    plt.title('Heatmap of Average Loan by Sector & Country')
-    st.pyplot(plt)
-
-elif visualization_option == "Frequency of Funded Loans Over Time":
-    time_data = filtered_data
-    
-    # CONVERTING 
-    time_data['funded_time'] = pd.to_datetime(time_data['funded_time'])
-    time_data.set_index('funded_time', inplace=True)
-
-    #resample the data to a monthly frequency (can also be yearly, daily, etc.)
-    funded_trend = time_data.resample('M').size()
-
-    #plot the frequency of searches over time
-    plt.figure(figsize=(12, 6))
-    plt.plot(funded_trend, label='Total Funded Loans', color='blue')
-
-    #add labels and title
-    plt.title('Frequency of Funded Loans Over Time')
-    plt.xlabel('Date')
-    plt.ylabel('Number of Funded Loans')
-    plt.legend()
-    plt.grid(True)
-    plt.show()
-
-# PART BONUS - DEBUGGING
-with st.expander("DEBUGGING 🤓"):
-    st.write("Selected sectors:", selected_sector)
-    st.write("Selected countries:", selected_country)
-    st.write("Filtered data:", filtered_data)
+ai_overview = explaination()
+st.write(ai_overview)
