@@ -152,8 +152,8 @@ filtered_data = filtered_data[filtered_data['sector'].isin(selected_sector)]
 #########################################################################################################################
 # COUNTRY SIDEBAR
 
-# CALCULATE TOP 10 COUNTRIES & CREATE A LIST
-top_countries = data.groupby('country').size().nlargest(10).index.tolist()
+# CALCULATE TOP 20 COUNTRIES & CREATE A LIST
+top_countries = data.groupby('country').size().nlargest(20).index.tolist()
 
 # COUNTRY SIDEBAR MULTISELECT
 selected_country = st.sidebar.multiselect(
@@ -183,21 +183,21 @@ if not selected_country:
 # Dropdown to select the type of visualization
 visualization_option = st.selectbox(
     "Select Visualization 🎨", 
-    ["Records of Loans Issued By Sector & Country (Top 10 Countries)", 
+    ["Records of Loans Issued By Sector & Country (Top 20 Countries)", 
      "KDE Plot - By Sector, Country & Total",
      "Box Plot - Country, Sector & Gender Group",
      # "Stacked Bar Chart - Mean Loan Amount by Gender, Sector & Country", REMOVED
      "Heatmap of Average Loan by Sector & Country",
      "Frequency of Funded Loans Over Time"])
 
-if visualization_option == "Records of Loans Issued By Sector & Country (Top 10 Countries)":
-    # Bar chart for Records of Loans Issued By Sector & Country (Top 10 Countries)
+if visualization_option == "Records of Loans Issued By Sector & Country (Top 20 Countries)":
+    # Bar chart for Records of Loans Issued By Sector & Country (Top 20 Countries)
     chart = alt.Chart(filtered_data).mark_bar().encode(
         x='loan_amount',
         y='count()',
         color='sector',
     ).properties(
-        title='Records of Loans Issued By Sector & Country (Top 10 Countries)'
+        title='Records of Loans Issued By Sector & Country (Top 20 Countries)'
     )
     st.altair_chart(chart, use_container_width=True)
 
@@ -207,7 +207,7 @@ if visualization_option == "Records of Loans Issued By Sector & Country (Top 10 
         y='count()',
         color='country',
     ).properties(
-        title='Records of Loans Issued By Country Only (Top 10 Countries)'
+        title='Records of Loans Issued By Country Only (Top 20 Countries)'
     )
     st.altair_chart(chart, use_container_width=True)
 
@@ -247,7 +247,7 @@ elif visualization_option == "Box Plot - Country, Sector & Gender Group":
     
     plt.figure(figsize=(12, 8))
     sns.boxplot(data=filtered_data, x='sector', y='loan_amount', hue='country', palette='gist_rainbow')
-    plt.title('Box Plot of Loan Amounts By Country (top 10) & Sector')
+    plt.title('Box Plot of Loan Amounts By Country (top 20) & Sector')
     plt.xlabel('Sector')
     plt.ylabel('Country')
     plt.xticks(rotation=45)
