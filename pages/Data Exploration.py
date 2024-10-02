@@ -177,7 +177,26 @@ if not selected_sector:
 if not selected_country:
     st.warning("Please select a country from the sidebar ⚠️")
     st.stop()
-    
+
+# Sidebar slider for selecting loan amount range
+min_loan_amount = int(data['loan_amount'].min())
+max_loan_amount = int(data['loan_amount'].max())
+
+selected_amount_range = st.sidebar.slider(
+    'Select Loan Amount Range',
+    min_value=min_loan_amount,
+    max_value=max_loan_amount,
+    value=(min_loan_amount, max_loan_amount),
+    step=1
+)
+
+# Filter the dataframe based on the selected loan amount range
+filtered_data = data[
+    (data['loan_amount'] >= selected_amount_range[0]) &
+    (data['loan_amount'] <= selected_amount_range[1])
+]
+
+
 #########################################################################################################################
 # PART 4: VISUALIZATIONS
 # Dropdown to select the type of visualization
@@ -185,15 +204,14 @@ visualization_option = st.selectbox(
     "Select Visualization 🎨", 
     ["Records of Loans Issued By Sector & Country (Top 20 Countries)", 
      "KDE Plot - By Sector, Country & Total",
-     "Box Plot - Country, Sector & Gender Group",
-     # "Stacked Bar Chart - Mean Loan Amount by Gender, Sector & Country", REMOVED
+     "Stacked Bar Chart - Mean Loan Amount by Gender, Sector & Country", 
      "Heatmap of Average Loan by Sector & Country",
      "Frequency of Funded Loans Over Time"])
 
 if visualization_option == "Records of Loans Issued By Sector & Country (Top 20 Countries)":
-    # Bar chart for Records of Loans Issued By Sector & Country (Top 20 Countries)
+    # Bar chart for Records of Loans Issued By Sector (Top 20 Countries)
     chart = alt.Chart(filtered_data).mark_bar().encode(
-        x='loan_amount',
+        x=alt.X('loan_amount', scale=alt.Scale(domain=[0, filtered_data['loan_amount'].max()])),  # Set x-axis to start at 0
         y='count()',
         color='sector',
     ).properties(
@@ -201,9 +219,10 @@ if visualization_option == "Records of Loans Issued By Sector & Country (Top 20 
     )
     st.altair_chart(chart, use_container_width=True)
 
-    # Bar chart for Countries only
+
+ # Bar chart for Records of Loans Issued By Country (Top 20 Countries)
     chart = alt.Chart(filtered_data).mark_bar().encode(
-        x='loan_amount',
+        x=alt.X('loan_amount', scale=alt.Scale(domain=[0, filtered_data['loan_amount'].max()])),  # Force x-axis to start at 0
         y='count()',
         color='country',
     ).properties(
@@ -211,59 +230,40 @@ if visualization_option == "Records of Loans Issued By Sector & Country (Top 20 
     )
     st.altair_chart(chart, use_container_width=True)
 
+
+
 elif visualization_option == "KDE Plot - By Sector, Country & Total":
-    # KDE plot - SECTOR
-    plt.figure(figsize=(14, 10))  # Increased size to better visualize Top 20 countries
+# KDE plot - SECTOR
+    plt.figure(figsize=(17, 7))
     sns.kdeplot(data=filtered_data, x='loan_amount', hue='sector', fill=True, palette='gist_rainbow')
     plt.xlabel('Loan Amount')
     plt.ylabel('Density')
     plt.title('KDE Plot of Loan Amount by Sector')
+    plt.xlim(left=0)  # Ensure the x-axis starts at 0
     st.pyplot(plt)
 
-    # KDE plot - Country
-    plt.figure(figsize=(14, 10))  # Adjusted size for Top 20 countries
+# KDE plot - Country
+    plt.figure(figsize=(17, 7))
     sns.kdeplot(data=filtered_data, x='loan_amount', hue='country', fill=True, palette='gist_rainbow')
     plt.xlabel('Loan Amount')
     plt.ylabel('Density')
     plt.title('KDE Plot of Loan Amount by Country')
+    plt.xlim(left=0)  # Ensure the x-axis starts at 0
     st.pyplot(plt)
 
-    # KDE plot - TOTAL
-    plt.figure(figsize=(14, 10))  # Consistent size for total plot to match the others
+# KDE plot - TOTAL
+    plt.figure(figsize=(17, 7))
     sns.kdeplot(data=filtered_data, x='loan_amount', fill=True, palette='gist_rainbow')
     plt.xlabel('Loan Amount')
     plt.ylabel('Density')
     plt.title('KDE Plot of Total Loan Amount')
+    plt.xlim(left=0)  # Ensure the x-axis starts at 0
     st.pyplot(plt)
 
-elif visualization_option == "Box Plot - Country, Sector & Gender Group":
-    plt.figure(figsize=(16, 12))  # Increased size for better readability with Top 20
-    sns.boxplot(data=filtered_data, x='sector', y='loan_amount', hue='gender_class', palette='gist_rainbow')
-    plt.title('Box Plot of Loan Amounts By Sector and Gender Group')
-    plt.xlabel('Sector')
-    plt.ylabel('Loan Amount')
-    plt.xticks(rotation=45)
-    st.pyplot(plt)
-    
-    plt.figure(figsize=(16, 12))  # Increased size for 20 countries
-    sns.boxplot(data=filtered_data, x='sector', y='loan_amount', hue='country', palette='gist_rainbow')
-    plt.title('Box Plot of Loan Amounts By Country (Top 20) & Sector')
-    plt.xlabel('Sector')
-    plt.ylabel('Loan Amount')
-    plt.xticks(rotation=45)
-    st.pyplot(plt)
 
 elif visualization_option == "Stacked Bar Chart - Mean Loan Amount by Gender, Sector & Country":
-    gender_sector_country = filtered_data.groupby(['sector', 'country', 'gender_class'])['loan_amount'].mean().unstack()
-    gender_sector_country.plot(kind='barh', stacked=True, colormap='coolwarm', figsize=(18, 30))  # Larger size for Top 20
-    plt.title('Stacked Bar Chart of Mean Loan Amount by Gender Sector & Country')
-    plt.ylabel('Sector and Country')
-    plt.xlabel('Mean Loan Amount')
-    plt.xticks(rotation=0)
-    st.pyplot(plt)
-
     gender_sector = filtered_data.groupby(['sector', 'gender_class'])['loan_amount'].mean().unstack()
-    gender_sector.plot(kind='barh', stacked=True, colormap='coolwarm', figsize=(16, 12))  # Consistent size with above
+    gender_sector.plot(kind='barh', stacked=True, colormap='coolwarm', figsize=(14, 8))
     plt.title('GENDER & SECTOR ONLY: Stacked Bar Chart of Mean Loan Amount by Gender & Sector')
     plt.ylabel('Sector')
     plt.xlabel('Mean Loan Amount')
@@ -271,7 +271,7 @@ elif visualization_option == "Stacked Bar Chart - Mean Loan Amount by Gender, Se
     st.pyplot(plt)
 
     gender_country = filtered_data.groupby(['country', 'gender_class'])['loan_amount'].mean().unstack()
-    gender_country.plot(kind='barh', stacked=True, colormap='coolwarm', figsize=(16, 12))  # Consistent size for Top 20
+    gender_country.plot(kind='barh', stacked=True, colormap='coolwarm', figsize=(14, 8))
     plt.title('GENDER & COUNTRY ONLY: Stacked Bar Chart of Mean Loan Amount by Gender & Country')
     plt.ylabel('Country')
     plt.xlabel('Mean Loan Amount')
@@ -280,7 +280,7 @@ elif visualization_option == "Stacked Bar Chart - Mean Loan Amount by Gender, Se
 
 elif visualization_option == "Heatmap of Average Loan by Sector & Country":
     heatmap_data = filtered_data.pivot_table(index='sector', columns='country', values='loan_amount', aggfunc='mean')
-    plt.figure(figsize=(16, 12))  # Increased size for heatmap readability with 20 countries
+    plt.figure(figsize=(20, 12))
     sns.heatmap(heatmap_data, cmap="coolwarm", annot=True, fmt=".1f")
     plt.title('Heatmap of Average Loan by Sector & Country')
     st.pyplot(plt)
@@ -288,27 +288,26 @@ elif visualization_option == "Heatmap of Average Loan by Sector & Country":
 elif visualization_option == "Frequency of Funded Loans Over Time":
     time_data = filtered_data
     
-    # CONVERTING 
+    # CONVERTING 'funded_time' column to datetime format
     time_data['funded_time'] = pd.to_datetime(time_data['funded_time'])
     time_data.set_index('funded_time', inplace=True)
 
-    #resample the data to a monthly frequency (can also be yearly, daily, etc.)
+    # Resample the data to a monthly frequency (can also be yearly, daily, etc.)
     funded_trend = time_data.resample('M').size()
 
-    #plot the frequency of searches over time
-    plt.figure(figsize=(16, 10))  # Adjusted size to fit time series better
+    # Create the plot
+    plt.figure(figsize=(20, 6))
     plt.plot(funded_trend, label='Total Funded Loans', color='blue')
 
-    #add labels and title
+    # Add labels, title, and legend
     plt.title('Frequency of Funded Loans Over Time')
     plt.xlabel('Date')
     plt.ylabel('Number of Funded Loans')
     plt.legend()
     plt.grid(True)
-    plt.show()
-
-
-
+    
+    # Display the plot in Streamlit
+    st.pyplot(plt)
 
 
 # PART BONUS - DEBUGGING
