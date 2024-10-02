@@ -3,14 +3,17 @@ pandas
 numpy
 matplotlib
 seaborn
-scikit-learn
-umap-learn
 geopandas
 altair
 vega-datasets
 
 #dataset file import
 requests
+
+# sml/uml models
+umap-learn
+scikit-learn
+xgboost
 
 # More
 lime 
