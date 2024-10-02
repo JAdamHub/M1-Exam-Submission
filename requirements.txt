@@ -14,6 +14,7 @@ requests
 umap-learn
 scikit-learn
 xgboost
+imblearn
 
 # More
 lime 
