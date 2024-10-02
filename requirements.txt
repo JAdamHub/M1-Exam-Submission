@@ -11,7 +11,6 @@ vega-datasets
 
 #dataset file import
 requests
-io
 
 # More
 lime 
