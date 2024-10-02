@@ -211,7 +211,7 @@ visualization_option = st.selectbox(
 if visualization_option == "Records of Loans Issued By Sector & Country (Top 20 Countries)":
     # Bar chart for Records of Loans Issued By Sector (Top 20 Countries)
     chart = alt.Chart(filtered_data).mark_bar().encode(
-        x=alt.X('loan_amount', scale=alt.Scale(domain=[0, filtered_data['loan_amount'].max()])),  # Set x-axis to start at 0
+        x=alt.X('loan_amount', scale=alt.Scale(domain=[filtered_data['loan_amount'].min(), filtered_data['loan_amount'].max()])),  # Set x-axis to start at 0
         y='count()',
         color='sector',
     ).properties(
@@ -222,7 +222,7 @@ if visualization_option == "Records of Loans Issued By Sector & Country (Top 20 
 
  # Bar chart for Records of Loans Issued By Country (Top 20 Countries)
     chart = alt.Chart(filtered_data).mark_bar().encode(
-        x=alt.X('loan_amount', scale=alt.Scale(domain=[0, filtered_data['loan_amount'].max()])),  # Force x-axis to start at 0
+        x=alt.X('loan_amount', scale=alt.Scale(domain=[filtered_data['loan_amount'].min(), filtered_data['loan_amount'].max()])),  # Force x-axis to start at 0
         y='count()',
         color='country',
     ).properties(
