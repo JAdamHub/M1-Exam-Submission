@@ -128,6 +128,25 @@ data = loading_dataset()
 # PART 3: Setting up title and filter-sideheader
 st.sidebar.header("Filters 📊")
 #########################################################################################################################
+# Sidebar slider for selecting loan amount range
+min_loan_amount = int(data['loan_amount'].min())
+max_loan_amount = int(data['loan_amount'].max())
+
+selected_amount_range = st.sidebar.slider(
+    'Select Loan Amount Range',
+    min_value=min_loan_amount,
+    max_value=max_loan_amount,
+    value=(min_loan_amount, max_loan_amount),
+    step=1
+)
+
+# Filter the dataframe based on the selected loan amount range
+filtered_data = data[
+    (data['loan_amount'] >= selected_amount_range[0]) &
+    (data['loan_amount'] <= selected_amount_range[1])
+]
+
+#########################################################################################################################
 # GENDER SIDEBAR
 
 # CREATE LIST OVER GENDERS
@@ -177,25 +196,6 @@ if not selected_sector:
 if not selected_country:
     st.warning("Please select a country from the sidebar ⚠️")
     st.stop()
-
-# Sidebar slider for selecting loan amount range
-min_loan_amount = int(data['loan_amount'].min())
-max_loan_amount = int(data['loan_amount'].max())
-
-selected_amount_range = st.sidebar.slider(
-    'Select Loan Amount Range',
-    min_value=min_loan_amount,
-    max_value=max_loan_amount,
-    value=(min_loan_amount, max_loan_amount),
-    step=1
-)
-
-# Filter the dataframe based on the selected loan amount range
-filtered_data = data[
-    (data['loan_amount'] >= selected_amount_range[0]) &
-    (data['loan_amount'] <= selected_amount_range[1])
-]
-
 
 #########################################################################################################################
 # PART 4: VISUALIZATIONS
