@@ -9,7 +9,7 @@ geopandas
 altair
 vega-datasets
 
-#file import
+#dataset file import
 requests
 io
 
