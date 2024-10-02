@@ -9,6 +9,11 @@ geopandas
 altair
 vega-datasets
 
+#file import
+zipfile
+requests
+io
+
 # More
 lime 
 shap 
