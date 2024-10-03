@@ -12,6 +12,7 @@ from duckduckgo_search import DDGS
 import zipfile
 import requests
 import re
+import io
 
 # PART 1: Function to load the data parts and use pd.concat to combine the 3 parts to one dataset
 @st.cache_data  # Cache the function to enhance performance - tells streamlit to keep the dataset in memory/cache
@@ -23,47 +24,25 @@ def loading_dataset():
     progress_bar = st.progress(2, text="Setting urls...")
     
     # Defination of url-paths
-    url1 = 'https://github.com/aaubs/ds-master/raw/main/data/assignments_datasets/KIVA/kiva_loans_part_0.csv.zip'
-    url2 = 'https://github.com/aaubs/ds-master/raw/main/data/assignments_datasets/KIVA/kiva_loans_part_1.csv.zip'
-    url3 = 'https://github.com/aaubs/ds-master/raw/main/data/assignments_datasets/KIVA/kiva_loans_part_2.csv.zip'
+    url1 = 'https://raw.githubusercontent.com/JAdamHub/M1-Exam-Submission/refs/heads/main/kiva_loans_part_0.csv'
+    url2 = 'https://raw.githubusercontent.com/JAdamHub/M1-Exam-Submission/refs/heads/main/kiva_loans_part_1.csv'
+    url3 = 'https://raw.githubusercontent.com/JAdamHub/M1-Exam-Submission/refs/heads/main/kiva_loans_part_2.csv'
 
     # Loading the urls into requests to download data
-    progress_bar.progress(9, text="Downloading datasets...1/3")
+    progress_bar.progress(40, text="Downloading datasets...1/3")
     response1 = requests.get(url1)
-    progress_bar.progress(32, text="Downloading datasets...2/3")
+    progress_bar.progress(55, text="Downloading datasets...2/3")
     response2 = requests.get(url2)
-    progress_bar.progress(50, text="Downloading datasets...3/3")
+    progress_bar.progress(75, text="Downloading datasets...3/3")
     response3 = requests.get(url3)
-
-    # Saves the .zip data as files
-    progress_bar.progress(55, text="Saving dataset zip-file...1/3")
-    with open("kiva_loans_part_0.csv.zip", "wb") as file:
-        file.write(response1.content)
-    progress_bar.progress(60, text="Saving dataset zip-file...2/3")
-    with open("kiva_loans_part_1.csv.zip", "wb") as file:
-        file.write(response2.content)
-    progress_bar.progress(65, text="Saving dataset zip-file...3/3")
-    with open("kiva_loans_part_2.csv.zip", "wb") as file:
-        file.write(response3.content)
-
-    # Unzip the files to get .csv
-    progress_bar.progress(70, text="Unzipping dataset...1/3")
-    with zipfile.ZipFile("kiva_loans_part_0.csv.zip", 'r') as zip_ref:
-        zip_ref.extractall()
-    progress_bar.progress(75, text="Unzipping dataset...2/3")
-    with zipfile.ZipFile("kiva_loans_part_1.csv.zip", 'r') as zip_ref:
-        zip_ref.extractall()
-    progress_bar.progress(81, text="Unzipping dataset...3/3")
-    with zipfile.ZipFile("kiva_loans_part_2.csv.zip", 'r') as zip_ref:
-        zip_ref.extractall()
 
     # Loading partial datasets
     progress_bar.progress(83, text="Importing partial datasets...")
-    data_part1 = pd.read_csv("kiva_loans_part_0.csv")
+    data_part1 = pd.read_csv(io.StringIO(response1.text))
     progress_bar.progress(85, text="Importing partial datasets...")
-    data_part2 = pd.read_csv("kiva_loans_part_1.csv")
+    data_part2 = pd.read_csv(io.StringIO(response2.text))
     progress_bar.progress(87, text="Importing partial datasets...")
-    data_part3 = pd.read_csv("kiva_loans_part_2.csv")
+    data_part3 = pd.read_csv(io.StringIO(response3.text))
 
     # Combining the datasets into one df using pd.concat
     progress_bar.progress(89, text="Merging datasets...")
