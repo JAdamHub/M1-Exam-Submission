@@ -3,27 +3,18 @@ pandas
 numpy
 matplotlib
 seaborn
-geopandas
 altair
 
 #dataset file import
 requests
 
-# sml/uml models
-umap-learn
+# sml models
 scikit-learn
 xgboost
 imblearn
 joblib
 
-# More
-lime 
-shap 
-pdpbox
-mlxtend
-
-# gradio or streamlit?
-gradio
+# streamlit
 streamlit
 
 # ai explaining
