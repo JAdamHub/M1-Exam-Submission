@@ -222,5 +222,5 @@ if st.button('Predict Loan Amount 🚀'):  # when the user clicks the button, th
     # use st.pyplot to render the plot in streamlit
     st.pyplot(plt)
     
-    st.markdown('Ensemble Model Training 🏋🏽‍♀️ R2 Score: 0.7806')
-    st.markdown('Ensemble Model Test 👩🏽‍⚕️ R2 Score: 0.6822')
+st.markdown('Ensemble Model Training 🏋🏽‍♀️ R2 Score: 0.7806')
+st.markdown('Ensemble Model Test 👩🏽‍⚕️ R2 Score: 0.6822')
