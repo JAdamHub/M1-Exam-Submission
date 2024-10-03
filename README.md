@@ -1,5 +1,4 @@
-# M1 Exam Submission - KIVA MICROLOANS 
-## DATA EXPLORATION & LOAN PREDICTION 🪙💰
+# M1 Exam Submission - KIVA MICROLOANS: DATA EXPLORATION & LOAN PREDICTION 🪙💰
 
 ## GITHUB LINK 🔗:
  - https://github.com/JAdamHub/M1-Exam-Submission
