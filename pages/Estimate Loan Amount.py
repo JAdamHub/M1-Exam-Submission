@@ -143,17 +143,3 @@ if st.button('Predict Loan Amount 🚀'):
     
     st.markdown('Ensemble Model Training 🏋🏽‍♀️ R2 Score: 0.7806')
     st.markdown('Ensemble Model Test 👩🏽‍⚕️ R2 Score: 0.6822')
-    
-    data_sample = data.sample(n=10000, random_state=9000)
-    
-    from sklearn.model_selection import train_test_split
-    
-    # Assuming data contains your features and loan_amount is your target variable
-    # define the target variable 'y' (loan_amount)
-    y = data_sample['loan_amount']
-
-    # define the feature set 'X' (all other columns except loan_amount)
-    X = data_sample[['activity', 'sector', 'country', 'borrowers_count', 'funding_duration_days', 'region', 'gender_class', 'term_in_months']]
-
-    # Split the data into training and test sets
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
