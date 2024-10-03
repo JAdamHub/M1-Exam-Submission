@@ -67,79 +67,93 @@ def loading_dataset():
 
 data = loading_dataset()
 
-import streamlit as st
-import pandas as pd
-import joblib
-
-@st.cache_resource
+@st.cache_resource  # Cache the model to improve performance by avoiding reloading on every run
 def load_model_objects():
+    # Load the pre-trained ensemble model from the specified file
     ensemble_model = joblib.load('ensemble_model.joblib')
-    return ensemble_model
+    return ensemble_model  # Return the loaded model for use in the app
 
+# Call the function to load the ensemble model
 ensemble_model = load_model_objects()
 
-# 
-sector_activity_mapping = data.groupby('sector')['activity'].unique().to_dict() 
+# Create a mapping of unique activities for each sector
+# This helps us understand what activities are associated with each sector
+sector_activity_mapping = data.groupby('sector')['activity'].unique().to_dict()
+
+# Create a mapping of unique regions for each country
+# This provides insights into the regional distribution of countries in the dataset
 country_region_mapping = data.groupby('country')['region'].unique().to_dict()
 
 # Assuming the first estimator in the ensemble is the one with the preprocessor
+# Extract the preprocessor from the first estimator of the ensemble model
 preprocessor = ensemble_model.estimators_[0].named_steps['preprocessor']
-ohe = preprocessor.named_transformers_['cat']
-scaler = preprocessor.named_transformers_['num']
 
-# Map feature names to categories
-feature_names = ohe.feature_names_in_
-categories = ohe.categories_
-feature_categories = dict(zip(feature_names, categories))
+# Extract the One-Hot Encoder and Scaler from the preprocessor
+ohe = preprocessor.named_transformers_['cat']  # One-Hot Encoder for categorical features
+scaler = preprocessor.named_transformers_['num']  # Scaler for numerical features
 
-col1, col2 = st.columns(2)
+# Map feature names to their corresponding categories for easier reference
+feature_names = ohe.feature_names_in_  # Get the feature names from the One-Hot Encoder
+categories = ohe.categories_  # Get the categories for each feature
+feature_categories = dict(zip(feature_names, categories))  # Create a dictionary mapping feature names to their categories
 
-with col1:
-    # Sector
+# Create two columns in the Streamlit layout for better organization
+col1, col2 = st.columns(2)  
+
+with col1:  # Using the first column of the layout
+    # Sector selection dropdown
     sector = st.selectbox('Sector 🛄', options=feature_categories['sector'])
     
-    # Get activities for the selected sector
-    activities = sector_activity_mapping.get(sector, [])
+    # Get activities associated with the selected sector
+    activities = sector_activity_mapping.get(sector, [])  # If the sector is not found, return an empty list
+    # Activity selection dropdown based on the selected sector
     activity = st.selectbox('Activity 🚩', options=activities)
     
-    # Country
+    # Country selection dropdown
     country = st.selectbox('Country 🌎', options=feature_categories['country'])
     
-    # Get region for the selected country
-    country_region = country_region_mapping.get(country, [])
+    # Get the region associated with the selected country
+    country_region = country_region_mapping.get(country, [])  # If the country is not found, return an empty list
+    # Region selection dropdown based on the selected country
     region = st.selectbox('Region 🛣️', options=country_region)
     
-    # Gender
+    # Gender selection radio buttons
     gender = st.radio('Gender 🧑‍🧒‍🧒', options=feature_categories['gender_class'])
 
-with col2:
+with col2:  # Using the second column of the layout
+    # Number input for the count of borrowers
     borrowers_count = st.number_input('Number of Borrowers 🧑‍🤝‍🧑', min_value=1, max_value=30, value=1)
+    
+    # Number input for the funding duration in days
     funding_duration = st.number_input('Funding Duration (Days) 🔔', min_value=0, max_value=90, value=2)
+    
+    # Number input for the loan term in months
     term_in_months = st.number_input('Term in Months 🧮', min_value=1, max_value=144, value=12)
 
 # Prediction button
-if st.button('Predict Loan Amount 🚀'):
-    # Prepare all features
+if st.button('Predict Loan Amount 🚀'):  # When the user clicks the button, the prediction process begins
+    # Prepare all features into a DataFrame
     input_features = pd.DataFrame({
-        'activity': [activity],
-        'sector': [sector],
-        'country': [country],
-        'region': [region],
-        'gender_class': [gender],
-        'borrowers_count': [borrowers_count],
-        'funding_duration_days': [funding_duration],
-        'term_in_months': [term_in_months],
+        'activity': [activity],  # User-selected activity
+        'sector': [sector],      # User-selected sector
+        'country': [country],    # User-selected country
+        'region': [region],      # User-selected region
+        'gender_class': [gender],  # User-selected gender
+        'borrowers_count': [borrowers_count],  # User input for the number of borrowers
+        'funding_duration_days': [funding_duration],  # User input for funding duration in days
+        'term_in_months': [term_in_months],  # User input for loan term in months
     })
 
     # Make prediction directly using the ensemble model
-    predicted_price = ensemble_model.predict(input_features)[0]
+    predicted_price = ensemble_model.predict(input_features)[0]  # Predict the loan amount based on input features
 
-    # Display prediction
-    st.metric(label="Predicted Loan Amount", value=f'${round(predicted_price, 2)}')
+    # Display prediction in the Streamlit app
+    st.metric(label="Predicted Loan Amount", value=f'${round(predicted_price, 2)}')  # Show the predicted loan amount rounded to two decimal places
 
     # Optional debugging statements
-    print("Input features:", input_features.columns.tolist())
-    print("Input features shape:", input_features.shape)
+    print("Input features:", input_features.columns.tolist())  # Print the names of the input features for debugging
+    print("Input features shape:", input_features.shape)  # Print the shape of the input features DataFrame for debugging
+
     
     st.markdown('Ensemble Model Training 🏋🏽‍♀️ R2 Score: 0.7806')
     st.markdown('Ensemble Model Test 👩🏽‍⚕️ R2 Score: 0.6822')
