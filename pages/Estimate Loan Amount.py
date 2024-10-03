@@ -8,6 +8,9 @@ import joblib
 import requests
 import io
 
+# display models
+import matplotlib.pyplot as plt
+
 @st.cache_data  # Cache the function to enhance performance - tells streamlit to keep the dataset in memory/cache
 def loading_dataset():
     # Setting Title
@@ -137,6 +140,6 @@ if st.button('Predict Loan Amount 🚀'):
     # Optional debugging statements
     print("Input features:", input_features.columns.tolist())
     print("Input features shape:", input_features.shape)
-
-st.markdown('Ensemble Model Training 🏋🏽‍♀️ R2 Score: 0.7806')
-st.markdown('Ensemble Model Test 👩🏽‍⚕️ R2 Score: 0.6822')
+    
+    st.markdown('Ensemble Model Training 🏋🏽‍♀️ R2 Score: 0.7806')
+    st.markdown('Ensemble Model Test 👩🏽‍⚕️ R2 Score: 0.6822')
