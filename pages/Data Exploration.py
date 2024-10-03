@@ -28,6 +28,9 @@ def loading_dataset():
     url2 = 'https://raw.githubusercontent.com/JAdamHub/M1-Exam-Submission/refs/heads/main/kiva_loans_part_1.csv'
     url3 = 'https://raw.githubusercontent.com/JAdamHub/M1-Exam-Submission/refs/heads/main/kiva_loans_part_2.csv'
 
+    # Here we define the URLs where our dataset parts are hosted. 
+    # They're hosted on GitHub, and we're going to download them in 3 parts.
+
     # Loading the urls into requests to download data
     progress_bar.progress(40, text="Downloading datasets...1/3")
     response1 = requests.get(url1)
@@ -46,6 +49,8 @@ def loading_dataset():
     progress_bar.progress(87, text="Importing partial datasets...")
     data_part3 = pd.read_csv(io.StringIO(response3.text))
 
+    # We're now importing the dataset parts into pandas DataFrames.
+    
     # Combining the datasets into one df using pd.concat
     progress_bar.progress(89, text="Merging datasets...")
     data = pd.concat([data_part1, data_part2, data_part3])
@@ -137,11 +142,15 @@ selected_amount_range = st.sidebar.slider(
     step=1
 )
 
+# The first filter lets the user select a range of loan amounts using a slider.
+
 # Filter the dataframe based on the selected loan amount range
 filtered_data = data[
     (data['loan_amount'] >= selected_amount_range[0]) &
     (data['loan_amount'] <= selected_amount_range[1])
 ]
+
+# We now filter the data to only include loans that fall within the selected amount range.
 
 #########################################################################################################################
 # GENDER SIDEBAR
@@ -200,11 +209,8 @@ if not selected_country:
     st.warning("Please select a country from the sidebar ⚠️")
     st.stop()
 
-<<<<<<< HEAD
 # If the user doesn't select any option in one of the filters, a warning appears to notify them.
 
-=======
->>>>>>> 00cd487bcb30e349cf52f7272df0ef4478858bcf
 #########################################################################################################################
 # PART 4: VISUALIZATIONS
 # Dropdown to select the type of visualization
@@ -215,13 +221,10 @@ visualization_option = st.selectbox(
      "Stacked Bar Chart - Mean Loan Amount by Gender, Sector & Country", 
      "Heatmap of Average Loan by Sector & Country",
      "Frequency of Funded Loans Over Time"])
-<<<<<<< HEAD
 
 if visualization_option == "Records of Loans Issued By Sector & Country (Top 20 Countries)":
     # Bar chart for Records of Loans Issued By Sector (Top 20 Countries)
     chart = alt.Chart(filtered_data).mark
-=======
->>>>>>> 00cd487bcb30e349cf52f7272df0ef4478858bcf
 
 if visualization_option == "Records of Loans Issued By Sector & Country (Top 20 Countries)":
     # Bar chart for Records of Loans Issued By Sector (Top 20 Countries)
@@ -245,19 +248,6 @@ if visualization_option == "Records of Loans Issued By Sector & Country (Top 20 
     )
     st.altair_chart(chart, use_container_width=True)
 
-<<<<<<< HEAD
-=======
-
-=======
-        x=alt.X('loan_amount', scale=alt.Scale(domain=[filtered_data['loan_amount'].min(), filtered_data['loan_amount'].max()])),  # Make the x-axis scale based on the data
-        y='count()',  # y-axis will count how many loans each country issued
-        color='country',  # Color the bars based on the country
-        ).properties(
-    title='Records of Loans Issued By Country Only (Top 20 Countries)'  # Title of the chart
-)
-    st.altair_chart(chart, use_container_width=True)  # Show the chart in Streamlit, using full width so it looks good
->>>>>>> 4770f83054b535dfbc44bdddac8234b6798f65e4
->>>>>>> 00cd487bcb30e349cf52f7272df0ef4478858bcf
 
 elif visualization_option == "KDE Plot - By Sector, Country & Total":
     # Starting with the KDE plot for loan amount by sector
