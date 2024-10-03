@@ -27,7 +27,7 @@ def loading_dataset():
         "data/kiva_loans_part_2.csv"
     ]
 
-    # check if all files exist
+    # check if all files exist if yes we load them!! using if and else statement
     if all(os.path.exists(file) for file in file_paths):
         # if all files are downloaded, load them
         progress_bar.progress(83, text="Importing partial datasets...")
