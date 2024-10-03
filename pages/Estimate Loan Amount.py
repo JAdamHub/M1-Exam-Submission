@@ -111,8 +111,8 @@ with col1:
 
 with col2:
     borrowers_count = st.number_input('Number of Borrowers', min_value=1, max_value=30, value=1)
-    funding_duration = st.number_input('Funding Duration (Days)', min_value=0, max_value=90, value=30)
-    term_in_months = st.number_input('Term in Months ', min_value=1, max_value=144, value=12)
+    funding_duration = st.number_input('Funding Duration (Days)', min_value=0, max_value=90, value=2)
+    term_in_months = st.number_input('Term in Months', min_value=1, max_value=144, value=12)
 
 # Prediction button
 if st.button('Predict Loan Amount 🚀'):
