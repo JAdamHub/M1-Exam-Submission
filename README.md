@@ -1,4 +1,4 @@
-# M1 Exam Submission - KIVA MICROLOANS DATA EXPLORATION & LOAN PREDICTION
+# M1 Exam Submission - KIVA MICROLOANS DATA EXPLORATION & LOAN PREDICTION 🪙💰
 
 This project focuses on predicting loan amounts for Kiva microlending platform using machine learning techniques. It includes data exploration, model development, and a Streamlit web application for interactive predictions.
 
