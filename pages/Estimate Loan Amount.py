@@ -61,6 +61,10 @@ def loading_dataset():
         progress_bar.progress(87, text="Importing partial datasets...")
         data_part3 = pd.read_csv(io.StringIO(response3.text))
     
+# Combining the datasets into one df using pd.concat
+    progress_bar.progress(89, text="Merging datasets...")
+    data = pd.concat([data_part1, data_part2, data_part3])
+    
 # Drop columns we're not going to use
     progress_bar.progress(91, text="Dropping irrelevant columns & cleaning dataset...")
     data = data.drop(['tags', 'use', 'currency', 'country_code', 'partner_id'], axis=1)
