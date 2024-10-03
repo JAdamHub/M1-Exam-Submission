@@ -134,7 +134,7 @@ with st.expander("DESCRIPTIVE STATISTICS 📊"):
 # AI explaination
 @st.cache_data
 def explaination():
-    ai_overview = DDGS().chat("You're a smart data analyst. Provide and interpretate an overview of the KIVA Microloans Dataset." + str((data.describe())), model='claude-3-haiku')
+    ai_overview = DDGS().chat("You're a smart data analyst. Provide and interpretate an overview of the KIVA Microloans Dataset. Make sure text is clear after numbers are shown" + str((data.describe())), model='claude-3-haiku')
     return ai_overview
 
 ai_overview = explaination()
