@@ -19,6 +19,9 @@ This project focuses on predicting loan amounts for Kiva microlending platform u
 - `ensemble_model.joblib`: Saved machine learning ensemble model (30% Random Forest & 70% XGBoost)
 - `requirements.txt`: List of required Python packages
 
+## Run Streamlit app.py online:
+https://m1-exam.streamlit.app/
+
 ## Setup and Installation
 
 1. Clone this repository to your local machine.
