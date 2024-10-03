@@ -22,7 +22,12 @@ This project focuses on predicting loan amounts for Kiva microlending platform u
 ## Setup and Installation
 
 1. Clone this repository to your local machine.
-2. Create a virtual environment (recommended):
+
+Notebooks:
+* Open desired jupyter notebook in your environment:
+   * Make sure to install python libraries from `requirements.txt` - will run in beginning of each notebook
+
+Streamlit:
+* Run Streamlit app using `streamlit run app.py`
    * Make sure to install python libraries from `requirements.txt`
-3. Run Streamlit app using `streamlit run app.py`
    * IMPORTANT: Remember to open terminal in cloned folder
