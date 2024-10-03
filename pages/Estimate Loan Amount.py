@@ -11,7 +11,7 @@ import io
 @st.cache_data  # Cache the function to enhance performance - tells streamlit to keep the dataset in memory/cache
 def loading_dataset():
     # Setting Title
-    st.title("💰 KIVA - Microloans Statistics 🪙")
+    st.title("💰 KIVA - Loan Prediction 💡")
 
     # LOADING BAR:
     progress_bar = st.progress(2, text="Setting urls...")
@@ -93,26 +93,26 @@ col1, col2 = st.columns(2)
 
 with col1:
     # Sector
-    sector = st.selectbox('Sector', options=feature_categories['sector'])
+    sector = st.selectbox('Sector 🛄', options=feature_categories['sector'])
     
     # Get activities for the selected sector
     activities = sector_activity_mapping.get(sector, [])
-    activity = st.selectbox('Activity', options=activities)
+    activity = st.selectbox('Activity 🚩', options=activities)
     
     # Country
-    country = st.selectbox('Country', options=feature_categories['country'])
+    country = st.selectbox('Country 🌎', options=feature_categories['country'])
     
     # Get region for the selected country
     country_region = country_region_mapping.get(country, [])
-    region = st.selectbox('Region', options=country_region)
+    region = st.selectbox('Region 🛣️', options=country_region)
     
     # Gender
-    gender = st.radio('Gender', options=feature_categories['gender_class'])
+    gender = st.radio('Gender 🧑‍🧒‍🧒', options=feature_categories['gender_class'])
 
 with col2:
-    borrowers_count = st.number_input('Number of Borrowers', min_value=1, max_value=30, value=1)
-    funding_duration = st.number_input('Funding Duration (Days)', min_value=0, max_value=90, value=30)
-    term_in_months = st.number_input('Term in Months ', min_value=1, max_value=144, value=12)
+    borrowers_count = st.number_input('Number of Borrowers 🧑‍🤝‍🧑', min_value=1, max_value=30, value=1)
+    funding_duration = st.number_input('Funding Duration (Days) 🔔', min_value=0, max_value=90, value=2)
+    term_in_months = st.number_input('Term in Months 🧮', min_value=1, max_value=144, value=12)
 
 # Prediction button
 if st.button('Predict Loan Amount 🚀'):
@@ -137,3 +137,6 @@ if st.button('Predict Loan Amount 🚀'):
     # Optional debugging statements
     print("Input features:", input_features.columns.tolist())
     print("Input features shape:", input_features.shape)
+
+st.markdown('Ensemble Model Training 🏋🏽‍♀️ R2 Score: 0.7806')
+st.markdown('Ensemble Model Test 👩🏽‍⚕️ R2 Score: 0.6822')

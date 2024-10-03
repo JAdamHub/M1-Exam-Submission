@@ -18,7 +18,7 @@ import io
 @st.cache_data  # Cache the function to enhance performance - tells streamlit to keep the dataset in memory/cache
 def loading_dataset():
     # Setting Title
-    st.title("💰 KIVA - Microloans Statistics 🪙")
+    st.title("💰 KIVA - Microloans 🪙")
 
     # LOADING BAR:
     progress_bar = st.progress(2, text="Setting urls...")
