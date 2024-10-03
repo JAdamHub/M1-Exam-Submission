@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy.stats import zscore
 import altair as alt
-from vega_datasets import data
 import requests
 import re
 import io
