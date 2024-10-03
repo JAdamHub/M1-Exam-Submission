@@ -15,6 +15,7 @@ umap-learn
 scikit-learn
 xgboost
 imblearn
+joblib
 
 # More
 lime 
