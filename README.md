@@ -6,7 +6,7 @@
 
 ## Description 🚩: 
 
-This project focuses on predicting loan amounts for Kiva microlending platform using machine learning techniques. It includes data exploration, sml model development, and a Streamlit web application for interactive predictions.
+This project focuses on predicting loan amounts for Kiva microlending platform using machine learning techniques. It includes data exploration, sml model development, and a Streamlit web application for interactive loan predictions.
 
 ## Project Structure 📂
 
