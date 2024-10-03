@@ -67,6 +67,24 @@ def loading_dataset():
 
 data = loading_dataset()
 
+# Description of the model
+st.markdown("""
+### Loan Amount Prediction:
+#### Target: loan_amount (Amount of Loan)
+
+#### Problem Statement:
+
+The objective is to predict the loan amount that a borrower can receive based on various factors such as the borrower's country, sector, activity type, number of borrowers, funding duration, and repayment term. By understanding these relationships, the model can provide insights into how these factors influence the size of loans that borrowers are likely to be granted.
+
+#### Type of Model:
+The model uses an ensemble approach, combining both Random Forest and XGBoost models. This ensemble method takes advantage of the strengths of both algorithms, providing a robust and accurate prediction of loan amounts by reducing overfitting and improving model performance. The target variable, `loan_amount`, is continuous, making regression the appropriate method.
+
+#### Objective:
+This ensemble model aims to assist lending platforms and financial institutions in estimating the appropriate loan amount for borrowers under different conditions. The model's insights can help improve loan approval strategies, ensure fair and data-driven lending decisions, and effectively manage borrower expectations. By accurately predicting loan amounts, the model helps lenders optimize resources, minimize risk, and better serve their customers.
+""")
+
+
+
 @st.cache_resource  # Cache the model to improve performance by avoiding reloading on every run
 def load_model_objects():
     # Load the pre-trained ensemble model from the specified file

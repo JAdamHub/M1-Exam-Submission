@@ -127,7 +127,7 @@ data = loading_dataset()
 # Adding a description and motivation
 st.markdown("""
 #### Description and Motivation
-This page contains an exploratory data analysis (EDA) and a machine learning model to predict the gender of borrowers based on loan details. The dataset used for this analysis is the Kiva Loans
+This page contains an exploratory data analysis (EDA) of the KIVA loans dataset with visualizations to give a brief understanding of what the Dataset contains and what it is about. 
 
 It has been chosen to include only the top 20 countries with the most loans, rather than including all countries, as it is beneficial for both exploratory data analysis (EDA) and building a supervised machine learning (SML) model to predict loans. 
 
