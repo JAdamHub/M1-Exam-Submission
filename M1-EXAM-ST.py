@@ -12,6 +12,7 @@ from duckduckgo_search import DDGS
 import zipfile
 import requests
 import re
+import io
 
 # PART 1: Function to load the data parts and use pd.concat to combine the 3 parts to one dataset
 @st.cache_data  # Cache the function to enhance performance - tells streamlit to keep the dataset in memory/cache
