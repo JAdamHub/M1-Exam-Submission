@@ -2,14 +2,8 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
 from scipy.stats import zscore
-import geopandas as gpd
-import altair as alt
-from vega_datasets import data
 from duckduckgo_search import DDGS
-import zipfile
 import requests
 import re
 import io
@@ -24,9 +18,9 @@ def loading_dataset():
     progress_bar = st.progress(2, text="Setting urls...")
     
     # Defination of url-paths
-    url1 = 'https://raw.githubusercontent.com/JAdamHub/M1-Exam-Submission/refs/heads/main/kiva_loans_part_0.csv'
-    url2 = 'https://raw.githubusercontent.com/JAdamHub/M1-Exam-Submission/refs/heads/main/kiva_loans_part_1.csv'
-    url3 = 'https://raw.githubusercontent.com/JAdamHub/M1-Exam-Submission/refs/heads/main/kiva_loans_part_2.csv'
+    url1 = 'https://raw.githubusercontent.com/JAdamHub/M1-Exam-Submission/refs/heads/main/data/kiva_loans_part_0.csv'
+    url2 = 'https://raw.githubusercontent.com/JAdamHub/M1-Exam-Submission/refs/heads/main/data/kiva_loans_part_1.csv'
+    url3 = 'https://raw.githubusercontent.com/JAdamHub/M1-Exam-Submission/refs/heads/main/data/kiva_loans_part_2.csv'
 
     # Loading the urls into requests to download data
     progress_bar.progress(40, text="Downloading datasets...1/3")
