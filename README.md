@@ -4,12 +4,12 @@ This project focuses on predicting loan amounts for Kiva microlending platform u
 
 ## Project Structure
 
-- `data/`: Contains the dataset files & 
-  - `X_test.csv`
-  - `kiva_loans_part_0.csv`
-  - `kiva_loans_part_1.csv`
-  - `kiva_loans_part_2.csv`
-  - `y_test.csv`
+- `data/`: Contains the dataset files & test data
+  - `kiva_loans_part_0.csv` Partial dataset 1
+  - `kiva_loans_part_1.csv` Partial dataset 2
+  - `kiva_loans_part_2.csv` Partial dataset 3
+  - `y_test.csv` Features variable testset
+  - `X_test.csv` Target variable testset 
 - `pages/`: Streamlit pages for the web application
   - `Data Exploration.py`
   - `Estimate Loan Amount.py`
