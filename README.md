@@ -1,5 +1,10 @@
 # M1 Exam Submission - KIVA MICROLOANS DATA EXPLORATION & LOAN PREDICTION 🪙💰
 
+## GITHUB LINK 🔗:
+ - https://github.com/JAdamHub/M1-Exam-Submission
+
+## Description 🚩: 
+
 This project focuses on predicting loan amounts for Kiva microlending platform using machine learning techniques. It includes data exploration, model development, and a Streamlit web application for interactive predictions.
 
 ## Project Structure 📂
