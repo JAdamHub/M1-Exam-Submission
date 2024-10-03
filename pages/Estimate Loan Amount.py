@@ -154,6 +154,32 @@ if st.button('Predict Loan Amount 🚀'):  # When the user clicks the button, th
     print("Input features:", input_features.columns.tolist())  # Print the names of the input features for debugging
     print("Input features shape:", input_features.shape)  # Print the shape of the input features DataFrame for debugging
 
+    # Load test data
+    y_test = pd.read_csv("data/y_test.csv")
+    X_test = pd.read_csv("data/X_test.csv")
+
+    import matplotlib.pyplot as plt
+    import seaborn as sns  # Seaborn for more styling options
+
+    # Step 1: Make predictions on the test set using your Ensemble model
+    y_pred = ensemble_model.predict(X_test)
+
+    # Step 2: Plot actual vs predicted values with transparency and reduced marker size
+    plt.figure(figsize=(10, 6))
+    plt.scatter(y_test, y_pred, alpha=0.3, s=10, color='blue', label='Predictions')  # Reduced marker size (s=10), transparency (alpha=0.3)
+    plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'k--', lw=2, color='red', label='Ideal Fit')
+
+    # Add the predicted value from the user input as a green point
+    plt.scatter([predicted_price], [predicted_price], color='green', s=100, label='Your Prediction')
+
+    plt.title('Ensemble Model: Actual vs Predicted Loan Amounts', fontsize=16)
+    plt.xlabel('Actual Loan Amount', fontsize=14)
+    plt.ylabel('Predicted Loan Amount', fontsize=14)
+    plt.legend()
+    plt.grid(True)
+
+    # Use st.pyplot to render the plot in Streamlit
+    st.pyplot(plt)
     
     st.markdown('Ensemble Model Training 🏋🏽‍♀️ R2 Score: 0.7806')
     st.markdown('Ensemble Model Test 👩🏽‍⚕️ R2 Score: 0.6822')

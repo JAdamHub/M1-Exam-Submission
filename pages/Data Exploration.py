@@ -9,7 +9,6 @@ import geopandas as gpd
 import altair as alt
 from vega_datasets import data
 from duckduckgo_search import DDGS
-import zipfile
 import requests
 import re
 import io
