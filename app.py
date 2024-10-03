@@ -46,7 +46,7 @@ def loading_dataset():
 
     # Drop columns we're not going to use
     progress_bar.progress(91, text="Dropping irrelevant columns & cleaning dataset...")
-    data = data.drop(['tags', 'use', 'currency', 'country_code', 'partner_id'], axis=1)
+    data = data.drop(['tags', 'use', 'currency', 'country_code', 'partner_id', 'id', 'funded_amount'], axis=1)
 
     #Dropping missing values using dropna
     data.dropna(inplace=True)
@@ -98,7 +98,6 @@ def loading_dataset():
 
 data = loading_dataset()
 
-
 #########################################################################################################################
 # PART 4: DATA OVERVIEW
 
@@ -114,7 +113,7 @@ with st.expander("DESCRIPTIVE STATISTICS 📊"):
 # AI explaination
 @st.cache_data
 def explaination():
-    ai_overview = DDGS().chat("You're a smart data analyst. Provide and interpretate an overview of the Dataset." + str((data.describe())))
+    ai_overview = DDGS().chat("You're a smart data analyst. Provide and interpretate an overview of the KIVA Microloans Dataset." + str((data.describe())), model='claude-3-haiku')
     return ai_overview
 
 ai_overview = explaination()

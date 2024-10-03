@@ -126,6 +126,20 @@ def loading_dataset():
 
 data = loading_dataset()
 
+# Adding a description and motivation
+st.markdown("""
+#### Description and Motivation
+
+It has been chosen to include only the top 20 countries with the most loans, rather than including all countries, as it is beneficial for both exploratory data analysis (EDA) and building a supervised machine learning (SML) model to predict loans. 
+
+By concentrating on the top 20 countries, the data becomes more reliable and representative of overall trends, ensuring that the insights drawn from the analysis and the predictions made by the model are more accurate. Including countries with very few loans introduces noise and sparse data, which may lead to less meaningful patterns and impact the model's performance. 
+
+Additionally, narrowing the scope to the most relevant countries reduces the complexity of the model, making it easier to interpret and less prone to overfitting. This approach also ensures more efficient resource allocation, as the majority of loan activity occurs in these countries, making the insights and predictions more actionable for practical business use.
+
+Overall, focusing on these key countries leads to a more effective EDA and an SML model that delivers clearer insights and better predictions.
+""")
+
+
 # PART 3: Setting up title and filter-sideheader
 st.sidebar.header("Filters 📊")
 #########################################################################################################################
