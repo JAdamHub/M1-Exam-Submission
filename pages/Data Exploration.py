@@ -9,7 +9,6 @@ import geopandas as gpd
 import altair as alt
 from vega_datasets import data
 from duckduckgo_search import DDGS
-import zipfile
 import requests
 import re
 import io
@@ -24,9 +23,9 @@ def loading_dataset():
     progress_bar = st.progress(2, text="Setting urls...")
     
     # Defination of url-paths
-    url1 = 'https://raw.githubusercontent.com/JAdamHub/M1-Exam-Submission/refs/heads/main/kiva_loans_part_0.csv'
-    url2 = 'https://raw.githubusercontent.com/JAdamHub/M1-Exam-Submission/refs/heads/main/kiva_loans_part_1.csv'
-    url3 = 'https://raw.githubusercontent.com/JAdamHub/M1-Exam-Submission/refs/heads/main/kiva_loans_part_2.csv'
+    url1 = 'https://raw.githubusercontent.com/JAdamHub/M1-Exam-Submission/refs/heads/main/data/kiva_loans_part_0.csv'
+    url2 = 'https://raw.githubusercontent.com/JAdamHub/M1-Exam-Submission/refs/heads/main/data/kiva_loans_part_1.csv'
+    url3 = 'https://raw.githubusercontent.com/JAdamHub/M1-Exam-Submission/refs/heads/main/data/kiva_loans_part_2.csv'
 
     # Here we define the URLs where our dataset parts are hosted. 
     # They're hosted on GitHub, and we're going to download them in 3 parts.
@@ -126,6 +125,20 @@ def loading_dataset():
     return data
 
 data = loading_dataset()
+
+# Adding a description and motivation
+st.markdown("""
+#### Description and Motivation
+
+It has been chosen to include only the top 20 countries with the most loans, rather than including all countries, as it is beneficial for both exploratory data analysis (EDA) and building a supervised machine learning (SML) model to predict loans. 
+
+By concentrating on the top 20 countries, the data becomes more reliable and representative of overall trends, ensuring that the insights drawn from the analysis and the predictions made by the model are more accurate. Including countries with very few loans introduces noise and sparse data, which may lead to less meaningful patterns and impact the model's performance. 
+
+Additionally, narrowing the scope to the most relevant countries reduces the complexity of the model, making it easier to interpret and less prone to overfitting. This approach also ensures more efficient resource allocation, as the majority of loan activity occurs in these countries, making the insights and predictions more actionable for practical business use.
+
+Overall, focusing on these key countries leads to a more effective EDA and an SML model that delivers clearer insights and better predictions.
+""")
+
 
 # PART 3: Setting up title and filter-sideheader
 st.sidebar.header("Filters 📊")

@@ -2,14 +2,8 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
 from scipy.stats import zscore
-import geopandas as gpd
-import altair as alt
-from vega_datasets import data
 from duckduckgo_search import DDGS
-import zipfile
 import requests
 import re
 import io
@@ -24,9 +18,9 @@ def loading_dataset():
     progress_bar = st.progress(2, text="Setting urls...")
     
     # Defination of url-paths
-    url1 = 'https://raw.githubusercontent.com/JAdamHub/M1-Exam-Submission/refs/heads/main/kiva_loans_part_0.csv'
-    url2 = 'https://raw.githubusercontent.com/JAdamHub/M1-Exam-Submission/refs/heads/main/kiva_loans_part_1.csv'
-    url3 = 'https://raw.githubusercontent.com/JAdamHub/M1-Exam-Submission/refs/heads/main/kiva_loans_part_2.csv'
+    url1 = 'https://raw.githubusercontent.com/JAdamHub/M1-Exam-Submission/refs/heads/main/data/kiva_loans_part_0.csv'
+    url2 = 'https://raw.githubusercontent.com/JAdamHub/M1-Exam-Submission/refs/heads/main/data/kiva_loans_part_1.csv'
+    url3 = 'https://raw.githubusercontent.com/JAdamHub/M1-Exam-Submission/refs/heads/main/data/kiva_loans_part_2.csv'
 
     # Loading the urls into requests to download data
     progress_bar.progress(40, text="Downloading datasets...1/3")
@@ -52,7 +46,7 @@ def loading_dataset():
 
     # Drop columns we're not going to use
     progress_bar.progress(91, text="Dropping irrelevant columns & cleaning dataset...")
-    data = data.drop(['tags', 'use', 'currency', 'country_code', 'partner_id'], axis=1)
+    data = data.drop(['tags', 'use', 'currency', 'country_code', 'partner_id', 'id', 'funded_amount'], axis=1)
 
     #Dropping missing values using dropna
     data.dropna(inplace=True)
@@ -104,7 +98,6 @@ def loading_dataset():
 
 data = loading_dataset()
 
-
 #########################################################################################################################
 # PART 4: DATA OVERVIEW
 
@@ -120,7 +113,7 @@ with st.expander("DESCRIPTIVE STATISTICS 📊"):
 # AI explaination
 @st.cache_data
 def explaination():
-    ai_overview = DDGS().chat("You're a smart data analyst. Provide and interpretate an overview of the Dataset." + str((data.describe())))
+    ai_overview = DDGS().chat("You're a smart data analyst. Provide and interpretate an overview of the KIVA Microloans Dataset." + str((data.describe())), model='claude-3-haiku')
     return ai_overview
 
 ai_overview = explaination()
