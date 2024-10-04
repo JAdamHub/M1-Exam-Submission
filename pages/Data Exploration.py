@@ -13,6 +13,9 @@ import re
 import io
 import os
 
+# App Name & Icon
+st.set_page_config(page_title="Data Exploration", page_icon=":rocket:")
+
 # PART 1: Function to load the data parts and use pd.concat to combine the 3 parts to one dataset
 @st.cache_data  # Cache the function to enhance performance - tells streamlit to keep the dataset in memory/cache
 def loading_dataset():

@@ -12,6 +12,9 @@ import os
 # display models
 import matplotlib.pyplot as plt
 
+# App Name & Icon (current page)
+st.set_page_config(page_title="Loan Prediction", page_icon=":rocket:")
+
 @st.cache_data  # Cache the function to enhance performance - tells streamlit to keep the dataset in memory/cache
 def loading_dataset():
     # Setting Title
