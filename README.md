@@ -40,3 +40,4 @@ Streamlit: 🎯
    * Make sure to install python libraries from `requirements.txt`
    * IMPORTANT: Remember to open terminal in cloned folder
 # M1_Examproject
+# M1_Examproject
